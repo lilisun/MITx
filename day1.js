@@ -55,9 +55,13 @@ function read_term(tokens){
     }
     var val1= read_operand(tokens);
     while (tokens.length!==0){
-        var operator=tokens.shift();
+        var operator=tokens[0];//tokens.shift();
+        var operatorPattern=/\+|\-|\*|\//g;
+        if (operator == ")") break;
+        if (operator.match(operatorPattern) === null ) throw "unrecognized operator";
         if (operator == "+" || operator =="-") break;
-        else if(operator != "*" && operator != "/") throw "unrecognized operator";
+        else tokens.shift();
+        
         if (tokens.length===0) throw "missing operand";
         var val2=read_operand(tokens);
         if (operator == "*") val1=val1*val2;
