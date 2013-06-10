@@ -3,7 +3,7 @@
     executed when calculate button is clicked
 */
 function calculate(text){
-    var pattern = /\d+|\+|\-|\*|\/|\(|\)/g; //this pattern will match numbers, +-*/, and ()
+    var pattern = /\d+\.?\d*|\.\d+|\+|\-|\*|\/|\(|\)/g; //this pattern will match numbers, +-*/, and ()
     var tokens = text.match(pattern); //returns an array
     
     try{
@@ -38,7 +38,7 @@ function read_operand(tokens){
     }
     
     try{
-        var numInt=parseInt(num);
+        var numInt=parseFloat(num);
         if (isNaN(numInt)) throw "number expected";
         if(neg) numInt=0-numInt; //if it's negative, make the number reflect that
         return numInt;
@@ -64,13 +64,15 @@ function evaluate(tokens){
         var operatorPattern=/\+|\-|\*|\//g;
         if (operator.match(operatorPattern) === null ) throw "unrecognized operator";
         if (tokens.length===0) throw "missing operand";
-        var val2 = tokens.shift();
-        if (operator == "+") ans= parseInt(val1) + parseInt(val2);
+        var val2 = read_operand(tokens);
+        if (operator == "+") ans= parseFloat(val1) + parseFloat(val2);
         else if (operator == "-") ans= val1 - val2;
         else if (operator == "*") ans= val1 * val2;
         else ans= val1 / val2;
+        val1=ans;
+        if (tokens[0]==")") break;
     }
-    return ans;
+    return val1;
 }
 
 /*
