@@ -20,6 +20,8 @@ function calculate(text){
 /*
     reads the next item in the array of tokens and returns it as a number
     assumes the item is a number. if not, throws error
+    handles negative numbers
+    if it gets a (, evaluates expression inside and returns that
 */
 function read_operand(tokens){
     var num= tokens.shift();
@@ -47,28 +49,44 @@ function read_operand(tokens){
     }
 }
 
+function read_term(tokens){
+    if (tokens.length===0){
+        throw "missing operand";
+    }
+    var val1= read_operand(tokens);
+    while (tokens.length!==0){
+        var operator=tokens.shift();
+        if (operator == "+" || operator =="-") break;
+        else if(operator != "*" && operator != "/") throw "unrecognized operator";
+        if (tokens.length===0) throw "missing operand";
+        var val2=read_operand(tokens);
+        if (operator == "*") val1=val1*val2;
+        else if (operator =="/") val1=val1/val2;
+    }
+    return val1;
+}
+
 /*
     actually evaluates the function
-    takes first item off array as first operand, second item as the operator, third item as second operand.
-    only those three items are processed and removed
-    returns evaluation of first_operand operator second_operand as a number
 */
 function evaluate(tokens){
     if (tokens.length===0){
         throw "missing operand";
     }
-    var val1 = read_operand(tokens);
+    //var val1 = read_operand(tokens);
+    var val1 = read_term(tokens);
     var ans;
     while (tokens.length!==0){
         var operator = tokens.shift();
         var operatorPattern=/\+|\-|\*|\//g;
         if (operator.match(operatorPattern) === null ) throw "unrecognized operator";
         if (tokens.length===0) throw "missing operand";
-        var val2 = read_operand(tokens);
+        //var val2 = read_operand(tokens);
+        var val2=read_term(tokens);
         if (operator == "+") ans= parseFloat(val1) + parseFloat(val2);
         else if (operator == "-") ans= val1 - val2;
-        else if (operator == "*") ans= val1 * val2;
-        else ans= val1 / val2;
+        //else if (operator == "*") ans= val1 * val2;
+        //else ans= val1 / val2;
         val1=ans;
         if (tokens[0]==")") break;
     }
