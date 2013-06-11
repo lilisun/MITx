@@ -148,9 +148,9 @@ function setup_calc(div){
         output.text("");
     });
     
-    $(".buttn").on("click",function(event){
-        output.text("12");
-    });
+    $(".buttn").bind("click",function(){
+          output.text("12");
+     });
     
     
     $(div).append(input,output,divRow1,divRow2,divRow3,divRow4,divRow5,divRow6);
