@@ -1,0 +1,83 @@
+.buttn{
+    width: 92px;
+    height: 55px;
+    margin-top: 10px;
+    margin-left: 5px;
+    border-radius: 10px;
+    background-color: #D4D4D4;
+    /*border-style:solid;*/
+    border-color: #797979;
+    border-width: 1px;
+    font-size: 20pt;
+    color: #323232;
+    /*Box Shadow notes:
+        index1: left side (no units)
+        index2: top side
+        index3: spread of the shadow/gradient
+        index4: width of shadow
+        inset --> shadow inside the button
+        
+    */
+    
+    box-shadow: 
+      inset 0 5px 5px 0 #F6F6F6, 
+      inset 0 -3px 4px 0 #777777,
+      inset 1px 1px 1px 1px #BDBDBD,
+            0 0 0 0 #909090,
+            0 0 0 0 #909090,
+            0 1px 0 1px #D0D0D0;
+
+    /*box-shadow: 0px -5px 5px 0px #A8A8A8 inset;*/
+    
+}
+
+.row .equals{
+    float:right;
+    margin-right: 10px;
+    height: 120px;
+    padding: 50px 0 0 0;
+}
+
+.row .zero{
+    width: 188px;
+}
+
+input{
+    width: 380px;
+    height: 90px;
+    background-color: rgb(238, 251, 205);
+    border-width:1px;
+    border-radius: 10px;
+    border-color:#AFB495;
+    margin-bottom: 15px;
+    margin-left: 7px;
+    font-size: 20pt;
+    color: #323232;
+    box-shadow: 
+        0 4px 7px 0 #AFB495 inset,
+        0 -2px 2px 0 #818181,
+        3px 0 2px 0 #818181,
+        -1px 4px 4px 0 #EEEEEE;
+    padding: 30px;
+    padding-top: 0;
+    text-align:right;
+}
+
+.output{
+    position:absolute;
+    left: 50px;
+    top: 70px;
+    font-family:monospace;
+    font-size:20px;
+}
+
+.Calculator{
+    width: 400px;
+    min-height: 500px;
+    border-style: none;
+    border-width:1px;
+    padding: 10px;
+    /*background-color:rgb(178, 178, 178);*/
+    background-image: -webkit-linear-gradient(#BBBBBB,#BCBCBC,#B1B1B1);
+    
+}
