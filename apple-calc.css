@@ -1,0 +1,23 @@
+            .calculator{
+                text-align:center;
+                background-color:#c3c3c3;
+                width:425px;
+                height:520px;
+            }
+            .calculator button{
+                width:90px;
+                height:50px;
+                margin-left:2px;
+                margin-right:3px;
+                margin-top:5px;
+                margin-bottom:5px;
+            }
+            
+            .calculator .long{
+                width:190px;
+            }
+            
+            .calculator input{
+                width:375px;
+                height:90px;
+            }
