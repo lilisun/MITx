@@ -110,7 +110,7 @@ function setup_calc(div){
     $.each(buttonNames, function(){
         if (counter==19) buttons[counter]=$("<button class='equals buttn'>"+buttonNames[counter]+"</button>");
         else if (counter==20)buttons[counter]=$("<button class='zero buttn'>"+buttonNames[counter]+"</button>"); 
-        else buttons[counter]=$("<button class='buttn'>"+buttonNames[counter]+"</button>");
+        else buttons[counter]=$("<button class='buttn' id='"+buttonNames[counter]+"'>"+buttonNames[counter]+"</button>");
         counter=counter+1;
     });
     
@@ -130,6 +130,7 @@ function setup_calc(div){
     var input = $('<input></input>',{type:"Text"});
     
     var output = $('<span class="output"></span>');
+    $(div).append(input,output,divRow1,divRow2,divRow3,divRow4,divRow5,divRow6);
     
     ///////////////// Button Functions////////////////////////
     
@@ -148,12 +149,13 @@ function setup_calc(div){
         output.text("");
     });
     
-    $(".buttn").bind("click",function(){
-          output.text("12");
+    $(".buttn").bind("click",function(event){
+        var val=event.target.id;
+        output.text(val);
      });
     
     
-    $(div).append(input,output,divRow1,divRow2,divRow3,divRow4,divRow5,divRow6);
+    
 }
 
 $(document).ready(function(){

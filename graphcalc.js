@@ -1,6 +1,15 @@
 var graphcalc = (function () {
     var exports = {};  // functions,vars accessible from outside
-   
+    
+    var datax;
+    var datay;
+    var xscale;
+    var yscale;
+    var ymax;
+    var xmin;
+    
+    //generates data arrays and necessary parameters for graphing based on input of equation box
+    //after generating data, calls drawData to actually put it on the canvas
     function graph(canvas,expression,x1,x2,div,dynamicCanvas) {
     	var canvasDOM=dynamicCanvas[0]; //everything happens on background canvas
     	var context=canvasDOM.getContext('2d');
@@ -26,7 +35,7 @@ var graphcalc = (function () {
 			var x=[];
 			var ymin;
 			xscale=canvasDOM.width/(max-min);
-			var increments=Math.round(((max-min)/canvasDOM.width)*100)/100;
+			var increments=Math.round(((max-min)/canvasDOM.width)*1000)/1000;
 			var i=min;
 			while(i<=max){
 				var val;
@@ -52,20 +61,17 @@ var graphcalc = (function () {
             datay=y;
             xmin=min;
 			yscale=(canvasDOM.height-20)/(ymax-ymin);
+            
         	drawData(canvasDOM,x,y,min,max,ymin);
         	
         	var canvasDOMOuter=canvas[0];
     		var contextOuter=canvasDOMOuter.getContext('2d');
-    		contextOuter.drawImage(canvasDOM,0,0);
+    		contextOuter.drawImage(canvasDOM,0,0); //puts it on outer canvas
         }
     }
-    var datax;
-    var datay;
-    var xscale;
-    var yscale;
-    var ymax;
-    var xmin;
+
     
+    //actually graphs stuff.
     function drawData(canvasDOM,x,y,min,max,ymin){
     	var context=canvasDOM.getContext('2d');
     	context.fillRect(0,0,canvasDOM.width,canvasDOM.height);
@@ -83,6 +89,7 @@ var graphcalc = (function () {
     	context.stroke();
     }
     
+    //for mouseover, getting the data point where the mouse x value is
     function getValue(mouseX,mouseY,JQcanvas,dynamicCanvas,div){
     	var offset=JQcanvas.offset(); //array of left and top
 		var canvasDOM=dynamicCanvas[0];
@@ -92,62 +99,85 @@ var graphcalc = (function () {
 		contextOuter.fillStyle="#ffffff";
 		contextOuter.fill();
 		contextOuter.drawImage(canvasDOM,0,0); //draw what was there
-		contextOuter.beginPath();
-		contextOuter.moveTo(mouseX,0);
-		contextOuter.lineTo(mouseX,canvasDOMOuter.height);
-		contextOuter.stroke();
-        
+        var x=mouseX; var y=mouseY;
         contextOuter.lineStyle="#000000";
-        var xCoord; var yCoord; var output="";
+        var xCoord; var yCoord;
         if (datax){ //if there is data, do this stuff
             xCoord=datax[parseInt(mouseX)];
             yCoord=datay[parseInt(mouseX)];
-            $(div).find('.error').text(mouseX+", "+mouseY+": "+);
-            output=Math.round(xCoord*100)/100+", "+Math.round(yCoord*100)/100;
-            contextOuter.strokeText(output,mouseX+7,mouseY-7);
+            y=ymax*yscale-yCoord*yscale+10;
+            x=xCoord*xscale-xmin*xscale;
+            var output=Math.round(xCoord*100)/100+", "+Math.round(yCoord*100)/100;
+            contextOuter.fillStyle="#333333";
+            if(mouseX>425){
+                contextOuter.textAlign="right";
+                var offset=-5;
+            }
+            else{
+                contextOuter.textAlign="left";
+                var offset=5;
+            }
+            contextOuter.fillText(output,x+offset,y-5);
             contextOuter.beginPath();
-            contextOuter.fillStyle="#00ff00";
-            contextOuter.fillRect(xCoord*xscale-xmin*xscale-2,ymax*yscale-yCoord*yscale-2+10,4,4);
+            contextOuter.fillRect(x-2,y-2,4,4);
             contextOuter.fill();
-            
         }
+        contextOuter.beginPath();
+        contextOuter.moveTo(x,0);
+        contextOuter.lineTo(x,canvasDOMOuter.height);
+        contextOuter.moveTo(0,y);
+        contextOuter.lineTo(canvasDOMOuter.width,y);
+        contextOuter.strokeStyle="#cccccc";
+        contextOuter.stroke();
     }
    
     function setup(div) {
-         var lineBreak=$('</br>');
-         var graphCanvas=$('<canvas width="500" height="300"></canvas>',{class: 'graphCanvas'});
-         var dynamicCanvas=$('<canvas width="500" height="300"></canvas>',{class: 'dynCanvas'}); //inner
-         var commandBox=$('<div></div>',{id: 'commandBox'});
-         var equation=$('<input></input>', {type:'text',id:'equation'});
-         var equationLabel=$('<label>f(x)= </label>', {for:'equation',value:"f(x)="});
-         var minLabel=$('</br></br><label>min x </label>', {for:'min', value:"min x",class:"range"});
-         var min=$('<input></input>', {type:'text',id:'min'});
-         var maxLabel=$('</br><label>max x </label>', {for: 'max', value:"max x",class:"range"});
-         var max=$('<input></input>', {type:'text',id:'max'});
-         var plotButton=$('</br></br><button>plot</button></br></br>',{value:'plot'});
-         var msgLabel=$('<span>error:</span></br>');
-         var msg = $('<div></div>',{class:'error'});
-         
+        var graphCanvas=$('<canvas width="500" height="500"></canvas>',{class: 'graphCanvas'});
+        var dynamicCanvas=$('<canvas width="500" height="500"></canvas>',{class: 'dynCanvas'}); //inner
+        var commandBox=$('<div></div>',{id: 'commandBox'});
+        var box="<div id='commandBox'>"
+            + "     <label for='equation' value='f(x)='>f(x)= </label>"
+            + "     <input type='text' id='equation'></input>"
+            + "     </br></br>"
+            + "     <label for='min' value='min x' class='range'>min x </label>"
+            + "     <input type='text' id='min'></input>"
+            + "     </br>"
+            + "     <label for='max' value='max x' class='range'>max x</label>"
+            + "     <input type='text' id='max'></input>"
+            + "     </br></br>"
+            + "     <button id='plotButton' value='plot'>plot</button>"
+            + "     </br></br>"
+            + "     <span>error:</span>"
+            + "     </br>"
+            + "     <div class='error'></div>"
+            + "</div>";
+        
          var context=graphCanvas[0].getContext('2d');
          context.width=500;
-         context.height=300;
+         context.height=500;
          context.fillStyle="#ffffff";
          context.fillRect(0,0,context.width,context.height);
          context.fill();
-         
-         $(max).keyup(function(event){
+        
+        commandBox.append(box); 
+        $(div).append(graphCanvas,commandBox);
+        
+        var max=commandBox.find('#max');
+        var min=commandBox.find('#min');
+        var equation=commandBox.find('#equation');
+        max.keyup(function(event){
          	if(event.keyCode==13){ plotButton.click(); }
          });
          
-         $(min).keyup(function(event){
+         min.keyup(function(event){
          	if(event.keyCode==13){ plotButton.click(); }
          });
          
-         $(equation).keyup(function(event){
+         equation.keyup(function(event){
          	if(event.keyCode==13){ plotButton.click(); }
          });
          
-         $(plotButton).on("click", function(){
+         $('#plotButton').on("click", function(){
             $(div).find('.error').text("");
          	graph(graphCanvas,equation.val(),min.val(),max.val(),div,dynamicCanvas);
          });
@@ -162,8 +192,8 @@ var graphcalc = (function () {
          	getValue(mx,my,graphCanvas,dynamicCanvas,div);
          });
          
-              commandBox.append(equationLabel,equation,minLabel,min,maxLabel,max,plotButton,msgLabel,msg);
-         $(div).append(graphCanvas,commandBox);
+              //commandBox.append(equationLabel,equation,minLabel,min,maxLabel,max,plotButton,msgLabel,msg);
+        
     }
     exports.setup = setup;
    

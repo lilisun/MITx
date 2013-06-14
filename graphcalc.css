@@ -1,6 +1,6 @@
 .graphCanvas{
 	width: 500px;
-	height:300px;
+	height:500px;
 	border: 1px solid #ffffff;
 	background-color:#ffffff;
 	float:left;
@@ -11,21 +11,20 @@
 	float:right;
 	background-color:#eeeeee;
 	padding:5px;
-	height:175px;
+	height:200px;
 }
 
 .graphcalc{
 	width:750px;
-	height:300px;
+	height:500px;
 	background-color:#dddddd;
 	padding:10px;
 	margin:auto;
+	font: 12px monospace;
+    float:right;
 }
 
-input{
+#commandBox input{
 	width:175px;
 }
 
-body{
-	font: 12px monospace;
-}
