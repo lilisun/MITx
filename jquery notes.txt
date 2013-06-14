@@ -1,0 +1,46 @@
+jquery notes
+
+$(______)
+	you can pass in:
+		-css selector
+		-html as a string
+			make a <h1> tag, then use $("h1") to get that node
+		-node
+		-you can chain things
+			var things = $("#siteTable .thing")
+			if you just want the first thing:
+				var things = $("#siteTable .thing").eq(0);
+	returns one or more nodes
+	
+	to manipulate nodes
+		var nodes = $("hi");
+		nodes.css("color","red");
+		$("#siteTable").html("hi");
+		var a = $("#siteTable .thing a.title").eq(0);
+		a.attr("href") will return the href (whatever link it's pointing to)
+		if you do a.attr("href", "http://www.google.com"); you set the link
+		setting attributes
+			a.data("dx",100);
+			a.data("dx"); will now return integer 100 instead of string
+				data never updates the node since it caches the result
+				so if you reset the data using .attr(), data won't return the right thing
+			a.attr("data-dy",50); this will change the actual html. START THINGS WITH "data-"
+		a.addClass("topPost");
+		a.removeClass("title");
+		a.position();
+		a.offset() , a.offset().left
+		a.animate();
+		a.hide();
+		a.show();
+			
+		
+	to create nodes:
+		var newNode =$("<h1></h1>"); //just put the html in the string
+
+also, other utility methods: $.each
+
+events
+	.on("click",function(){});
+	.off
+	.stopPropagation
+
