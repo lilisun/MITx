@@ -158,6 +158,10 @@ var graphcalc = (function () {
          context.fillStyle="#ffffff";
          context.fillRect(0,0,context.width,context.height);
          context.fill();
+        var dynamicContext=dynamicCanvas[0].getContext('2d');
+        dynamicContext.fillStyle="#ffffff";
+        dynamicContext.fillRect(0,0,dynamicContext.width,dynamicContext.height);
+        dynamicContext.fill();
         
         commandBox.append(box); 
         $(div).append(graphCanvas,commandBox);
