@@ -27,8 +27,12 @@ text {
 }
     
 .mouse-follow{
-        fill: rgba(50,50,50,.05);
-    }
+        fill: rgba(200,200,200,.5);
+}
+    
+.mouse-follow-click{
+        fill: rgba(255,50,50,.5);
+}
 
 </style>
 <body>
@@ -92,10 +96,12 @@ function move(p2) {
 }
     
 function click(p2){
-    circ2.attr("r",100);
+    circ2.attr("r",100)
+        .attr("class","mouse-follow-click");
     circ2.transition()
-        .duration(200)
-        .attr("r",30);
+        .duration(300)
+        .attr("r",30)
+        .attr("class","mouse-follow");
     svg.append("circle")
         .attr("cy",p2[1])
         .attr("cx",p2[0])
