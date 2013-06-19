@@ -97,14 +97,15 @@ function move(p2) {
     
 function click(p2){
     circ2.attr("r",100)
-        .attr("class","mouse-follow-click");
+        .attr("fill","red");
     circ2.transition()
         .duration(300)
         .attr("r",30)
-        .attr("class","mouse-follow");
+        .attr("fill","rgba(200,200,200,.5)");
     svg.append("circle")
         .attr("cy",p2[1])
         .attr("cx",p2[0])
+        .attr("fill","#eeaaaa")
         .attr("r",5);
     
 }
