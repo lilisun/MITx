@@ -3,15 +3,17 @@ var sack=(function(){
     var openImg=new Image();
     var closeImg=new Image();
     var items=[];
+    var maxWeight;
     
     function setup(div){
         div.find("img").css("display","none");
         var template=""
             +"<div class='main'>"
             +"  <div class='info'>"
-            +"      <p>oh no, there's too much delicious food!"
-            +"      we want to maximize the amount of DELICIOUS POINTS (dp) in our belly"
-            +"      but we only have so much money! what's the right combination"
+            +"      <p>oh no, there's too much delicious food!<br>"
+            +"      we want the maximum amount of DELICIOUS POINTS (dp) in our belly,"
+            +"      <br>but we only have so much money! <br><br>"
+            +"      what's the right combination"
             +"      of food to eat to get the most DELICIOUS POINTS??</p>"
             +"  </div>"
             +"  <div class='data'>"
@@ -19,25 +21,42 @@ var sack=(function(){
             +"      <p class='money'>money: </p>"
             +"  </div>"
             +"  <div class='gui'>"
-            +"      <canvas class='sack'></canvas>"
-            +"      <div class='foodbox'>"
-            +"      </div>"
+            +"      <div class='foodbox'></div>"
+            +"      <div class='person'></div>"
             +"  </div>"
             +""
             +"</div>";
+        var tableTemplate=""
+            +"<table>"
+            +"<tr>"
+            +"  <td><div class='item'></div></td>"
+            +"  <td><div class='item'></div></td>"
+            +"  <td><div class='item'></div></td>"
+            +"</tr>"
+            +"<tr>"
+            +"  <td><div class='item'></div></td>"
+            +"  <td><div class='item'></div></td>"
+            +"  <td><div class='item'></div></td>"
+            +"</tr>"
+            +"<tr>"
+            +"  <td><div class='item'></div></td>"
+            +"  <td><div class='item'></div></td>"
+            +"  <td><div class='item'></div></td>"
+            +"</tr>"
+            +""
+            +"</table>";
         div.append(template);
         
-        var canvas=div.find('canvas.sack')[0];
-        canvas.height=400;
-        canvas.width=850;
-        var context=canvas.getContext('2d');
+        div.find('.foodbox').append(tableTemplate);
+        
+        maxWeight=div.attr('data-max-weight');
         openImg.src="img/open.png";
         closeImg.src="img/closed.png";
         openImg.onload=function(){
-            context.drawImage(openImg,500,0);
+            div.find('.person').html("<img src='"+openImg.src+"'>");
         }
         
-        $('img').each(function(){
+        $('img').each(function(){ //get all images that were supplied in html
             var val=$(this).attr("data-value");
             var weight=$(this).attr("data-weight");
             var name=$(this).attr("data-name");
@@ -45,6 +64,16 @@ var sack=(function(){
             newImg.src=this.src;
             items.push({image:newImg, value:val, weight:weight, name:name});
         });
+        
+        var i=0;
+        $('.item').each(function(){ //put all images into the table
+            $(this).html("<img src='"+items[i].image.src+"'><br>");
+            $(this).find('img').attr("width","100");
+            $(this).append("dp: "+items[i].value+",  $"+items[i].weight);
+            i++;
+        });
+        
+        /*
         var rowCount=0; //3 cols per row
         var colCount=0;
         $.each(items,function(index,val){
@@ -55,7 +84,7 @@ var sack=(function(){
                 var text="dp: "+val.value+",  $"+val.weight;
                 context.font='9pt verdana';
                 context.textAlign='center';
-                context.fillStyle="#fff";
+                context.fillStyle="#aaddff";
                 context.fillText(text,80+colCount*140,120+rowCount*120);
                 colCount++;
                 if (colCount>=3) {
@@ -64,7 +93,7 @@ var sack=(function(){
                 }                
             }
         });
-        
+        */
     }
     
     exports.setup=setup;
