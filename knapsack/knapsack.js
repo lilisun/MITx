@@ -6,10 +6,14 @@ var sack=(function(){
     var munch2Img=new Image();
     var items=[];
     var maxWeight;
+    var maxDP=0;
     var dp=0;
     var money=0;
+    var moneyChart;
+    var dpChart;
     
     function dropped(event, ui){
+        $('audio.eat')[0].pause();
         $('audio.eat')[0].play();
         $('.person').css("background-image","url("+munchImg.src+")");
         $('.mouth').droppable("disable");
@@ -78,6 +82,42 @@ var sack=(function(){
     function updateData(){
         $('.dp').text("delicious points: "+dp);
         $('.money').text("money: $"+money+"/$"+maxWeight);
+        var offset=2;
+        $('.moneyData text').css('fill','#0a3');
+        $('.dpData text').css('fill','#D35548');
+        if (money*175/maxWeight+offset > 150){
+            offset=-30;
+            $('.moneyData text').css('fill','#9d8');
+        }
+        moneyChart.selectAll('rect').data([money])
+            .transition()
+                .duration(100)
+                .attr('width',money*175/maxWeight);
+        
+        moneyChart.selectAll('text').data([money])
+            .transition()
+                .duration(100)
+                .attr('x',money*175/maxWeight+offset)
+                .attr('y',14)
+                .text("$"+money);
+        
+        offset=2;
+        if (dp*175/maxDP+offset > 130){
+            offset=-30;
+            $('.dpData text').css('fill','#adf');
+        }
+        
+        dpChart.selectAll('rect').data([dp])
+            .transition()
+                .duration(100)
+                .attr('width',dp*175/maxDP);
+        
+        dpChart.selectAll('text').data([dp])
+            .transition()
+                .duration(100)
+                .attr('x',dp*175/maxDP+offset)
+                .attr('y',14)
+                .text(dp+" dp");
     }
     
     function checkMax(event, ui){
@@ -109,8 +149,8 @@ var sack=(function(){
             +"      of food to eat to get the most DELICIOUS POINTS??</p>"
             +"  </div>"
             +"  <div class='data'>"
-            +"      <p class='dp'>delicious points: 0</p>"
-            +"      <p class='money'>money: 0</p>"
+//            +"      <p class='dp'>delicious points: 0</p>"
+  //          +"      <p class='money'>money: 0</p>"
             +"  </div>"
             +"  <div class='gui'>"
             +"      <div class='foodbox'><span class='instructions'>drag food to the mouth!</span></div>"
@@ -181,6 +221,7 @@ var sack=(function(){
             var name=$(this).attr("data-name");
             var newImg=new Image();
             newImg.src=this.src;
+            maxDP=parseInt(maxDP)+parseInt(val);
             items.push({image:newImg, value:val, weight:weight, name:name});
         });
         
@@ -195,7 +236,36 @@ var sack=(function(){
             if (i>=items.length) return false;
         });
         
-            
+        $('.data').append('<br>');
+        moneyChart=d3.select('.data').append("svg")
+            .attr('class','moneyData')
+            .attr('width',175)
+            .attr('height',20);
+        moneyChart.selectAll('rect').data([money])
+            .enter().append('rect')
+                .attr('width',money*175/maxWeight)
+                .attr('height',20);
+        moneyChart.selectAll('text').data([money])
+            .enter().append('text')
+                .attr('x',money*175/maxWeight+3)
+                .attr('y',14)
+                .text("$"+money);
+        
+        $('.data').append('<br><br>');
+        dpChart=d3.select('.data').append("svg")
+            .attr('class','dpData')
+            .attr('width',175)
+            .attr('height',20);
+        dpChart.selectAll('rect').data([dp])
+            .enter().append('rect')
+                .attr('width',dp*175/maxDP)
+                .attr('height',20);
+        dpChart.selectAll('text').data([dp])
+            .enter().append('text')
+                .attr('x',dp*175/maxDP+3)
+                .attr('y',14)
+                .text(dp+" dp");
+        
         
     }
     

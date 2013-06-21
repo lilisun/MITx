@@ -43,8 +43,8 @@ div.data{
     border-radius:30px;
     background-color: #adf;
     width:200;
-    height:100px;
-    padding:10px;
+    height:90px;
+    padding:15px;
     padding-left:20px;
     padding-right:20px;
     color: #4e88aa;
@@ -135,4 +135,21 @@ span.instructions{
 
 .break span.instructions{
     color: #D35548;
+}
+
+.moneyData rect{
+    fill: #0a3;
+}
+.moneyData text{
+    fill: #0a3;
+}
+
+.moneyData{
+    background-color:#9d8;
+    border-radius:5px;
+}
+
+.dpData{
+    fill:#D35548;
+    border-radius:5px;
 }
