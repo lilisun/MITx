@@ -1,7 +1,7 @@
 body{
-    background-color: #ffcc66;
+    background-color: #fc6;
     font: 12px verdana;
-    color: #cc7711;
+    color: #c71;
 }
 
 a:link {
@@ -13,12 +13,12 @@ a:visited {
     text-decoration:none;
 }
 a:hover {
-    color: #ffee77;
+    color: #fe7;
     text-decoration:none;
 }
 
 div.main{
-    background-color: #ffee77;
+    background-color: #fe7;
     width:850px;
     margin:0 auto;
     margin-top:50px;
@@ -27,7 +27,7 @@ div.main{
 }
 
 div.info{
-    background-color: #aaddff;
+    background-color: #adf;
     border-radius:30px;
     float:left;
     width:550px;
@@ -41,7 +41,7 @@ div.info{
 div.data{
     float:right;
     border-radius:30px;
-    background-color: #aaddff;
+    background-color: #adf;
     width:200;
     height:100px;
     padding:10px;
@@ -53,10 +53,9 @@ div.data{
 div.gui{
     width:inherit;
     border:0;
-    margin:0 auto;
+    margin:0;
     padding:0;
     margin-top:150px;
-    position:relative;
 }
 
 div.foodbox{
@@ -65,22 +64,57 @@ div.foodbox{
     width:450px;
     height:380px;
     padding-top:20px;
+    float:left;
+    margin:0;
 }
 
 div.person{
-    width:200px;
+    width:300px;
     height:400px;
-    margin-left:500px;
+    margin:0;
+    float:right;
+    position:relative;
 }
 
-.knapsack td{
-    width:125px;
+div.mouth{
+    border:3px dotted #a00;
+    border-radius:50px;
+    width:100px;
+    height:75px;
+    margin-top:60px;
+    margin-left:80px;
+}
+
+div.belly{
+    border:0px solid #a00;
+    margin-top: 40px;
+    margin-left: 20px;
+    width:300px;
+}
+
+div.break{
+    clear:both;
+}
+
+.foodbox td{
+    font: 11px verdana;
+    width:123px;
+    height:120px;
     padding:10px;
     padding-bottom:20px;
 }
 
+.belly td{
+    font-size: 8px;
+    border:0px solid #fff;
+    width:80px;
+    height:70px;
+    padding:5px;
+    padding-bottom:7px;
+    width:60px;
+}
+
 div.item{
     text-align:center;
-    font: 11px verdana;
     color: #aaddff;
 }

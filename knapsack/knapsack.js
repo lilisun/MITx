@@ -4,6 +4,63 @@ var sack=(function(){
     var closeImg=new Image();
     var items=[];
     var maxWeight;
+    var dp=0;
+    var money=0;
+    
+    function dropped(event, ui){
+        var image=$(ui.draggable).find('img');
+        var index=parseInt(image.attr("data-index"));
+        var data=items[index];
+        dp=parseInt(dp)+parseInt(data.value);
+        money=parseInt(money)+parseInt(data.weight);
+        updateData();
+        //put in next empty cell in belly
+        $(ui.draggable).draggable("disable");
+        nextEmptyCell(ui.draggable,'.belly');
+    }
+    
+    function foodClicked(food){
+        var image=$(food).find('img');
+        var index=parseInt(image.attr("data-index"));
+        var data=items[index];
+        console.log(data);
+        dp=parseInt(dp)-parseInt(data.value);
+        money=parseInt(money)-parseInt(data.weight);
+        updateData();
+        
+        nextEmptyCell(food,'.foodbox');
+        $(food).draggable("enable");
+        
+        $(food).off("click");
+    }
+    
+    function nextEmptyCell(item,tableClass){
+        for(var i=0;i<9;i++){
+            var cell=$(tableClass).find('td')[i];
+            if ($(cell).html()=="") {
+                break;
+            }
+        }
+        $(item).css("left","0px").css("top","0px").css("opacity","1");
+        $(item).appendTo($(cell));
+        
+        if (tableClass=='.belly'){
+            $(item).find('img').css("width","50px");
+            $(item).on("click",function(){
+                console.log("clicked");
+                foodClicked(this)
+            });
+            console.log("bound");
+        }
+        else{
+            $(item).find('img').css("width","100px");
+        }
+    }
+    
+    function updateData(){
+        $('.dp').text("dp: "+dp);
+        $('.money').text("money: "+money);
+    }
     
     function setup(div){
         div.find("img").css("display","none");
@@ -17,12 +74,13 @@ var sack=(function(){
             +"      of food to eat to get the most DELICIOUS POINTS??</p>"
             +"  </div>"
             +"  <div class='data'>"
-            +"      <p class='dp'>dp: </p>"
-            +"      <p class='money'>money: </p>"
+            +"      <p class='dp'>dp: 0</p>"
+            +"      <p class='money'>money: 0</p>"
             +"  </div>"
             +"  <div class='gui'>"
             +"      <div class='foodbox'></div>"
             +"      <div class='person'></div>"
+            +"      <div class='break'></div>"
             +"  </div>"
             +""
             +"</div>";
@@ -45,16 +103,27 @@ var sack=(function(){
             +"</tr>"
             +""
             +"</table>";
+        
+        var personTemplate=""
+            +"<div class='mouth'></div>"
+            +"<div class='belly'></div>";
         div.append(template);
         
         div.find('.foodbox').append(tableTemplate);
+        div.find('.person').append(personTemplate);
+        div.find('.belly').append(tableTemplate);
+        div.find('.belly .item').remove();
         
         maxWeight=div.attr('data-max-weight');
         openImg.src="img/open.png";
         closeImg.src="img/closed.png";
         openImg.onload=function(){
-            div.find('.person').html("<img src='"+openImg.src+"'>");
+            div.find('.person').css("background-image","url("+openImg.src+")");
+            div.find('.person').css("background-size","auto 400");
+            div.find('.person').css("background-repeat","no-repeat");
         }
+        
+        div.find('.mouth').droppable({drop: function(event, ui){dropped(event, ui)}});
         
         $('img').each(function(){ //get all images that were supplied in html
             var val=$(this).attr("data-value");
@@ -69,31 +138,15 @@ var sack=(function(){
         $('.item').each(function(){ //put all images into the table
             $(this).html("<img src='"+items[i].image.src+"'><br>");
             $(this).find('img').attr("width","100");
+            $(this).find('img').attr("data-index",i);
             $(this).append("dp: "+items[i].value+",  $"+items[i].weight);
+            $(this).draggable({containment: ".gui",revert:"invalid", revertDuration:"100",zIndex:100});
             i++;
+            if (i>=items.length) return false;
         });
         
-        /*
-        var rowCount=0; //3 cols per row
-        var colCount=0;
-        $.each(items,function(index,val){
-            var currentImage=val.image;
-            currentImage.onload=function(){
-                context.drawImage(this,30+colCount*140,30+rowCount*120,
-                                  100,this.height*100/this.width); //scale to be 100px wide
-                var text="dp: "+val.value+",  $"+val.weight;
-                context.font='9pt verdana';
-                context.textAlign='center';
-                context.fillStyle="#aaddff";
-                context.fillText(text,80+colCount*140,120+rowCount*120);
-                colCount++;
-                if (colCount>=3) {
-                    colCount=0;
-                    rowCount++;
-                }                
-            }
-        });
-        */
+            
+        
     }
     
     exports.setup=setup;
