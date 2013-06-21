@@ -2,12 +2,17 @@ var sack=(function(){
     var exports={};
     var openImg=new Image();
     var closeImg=new Image();
+    var munchImg=new Image();
     var items=[];
     var maxWeight;
     var dp=0;
     var money=0;
     
     function dropped(event, ui){
+        $('.person').css("background-image","url("+munchImg.src+")");
+        setTimeout(function(){
+            $('.person').css("background-image","url("+openImg.src+")");
+        },400);
         var image=$(ui.draggable).find('img');
         var index=parseInt(image.attr("data-index"));
         var data=items[index];
@@ -132,6 +137,7 @@ var sack=(function(){
         $('.money').text("money: $0/$"+maxWeight);
         openImg.src="img/open.png";
         closeImg.src="img/closed.png";
+        munchImg.src="img/munch.png";
         openImg.onload=function(){
             div.find('.person').css("background-image","url("+openImg.src+")");
             div.find('.person').css("background-size","auto 400");
