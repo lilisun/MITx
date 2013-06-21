@@ -148,7 +148,7 @@ var sack=(function(){
             +"      what's the right combination"
             +"      of food to eat to get the most DELICIOUS POINTS??</p>"
             +"  </div>"
-            +"  <div class='data'>"
+            +"  <div class='data'>limit: $"
 //            +"      <p class='dp'>delicious points: 0</p>"
   //          +"      <p class='money'>money: 0</p>"
             +"  </div>"
@@ -202,7 +202,7 @@ var sack=(function(){
         div.find('.break').append(soundTemplate);
         
         maxWeight=div.attr('data-max-weight');
-        $('.money').text("money: $0/$"+maxWeight);
+        $('.data').append(maxWeight);
         openImg.src="img/open.png";
         closeImg.src="img/closed.png";
         munchImg.src="img/munch.png";
