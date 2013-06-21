@@ -61,7 +61,7 @@ div.gui{
 div.foodbox{
     border-radius:40px;
     background-color: #5f99bb;
-    width:450px;
+    width:475px;
     height:380px;
     padding-top:20px;
     float:left;
@@ -95,14 +95,15 @@ div.belly{
 
 div.break{
     clear:both;
+    text-align:right;
 }
 
 .foodbox td{
     font: 11px verdana;
-    width:123px;
-    height:120px;
+    width:132px;
+    height:110px;
     padding:10px;
-    padding-bottom:20px;
+    padding-bottom:10px;
 }
 
 .belly td{
@@ -121,8 +122,17 @@ div.item{
 }
 
 span.instructions{
-    margin-left:50px;
-    font: 9px verdana;
-    color: #5f99bb;
+    margin-left:30px;
+    margin-right:55px;;
+    font: 10px verdana;
+    color: #000;
     text-align:center;
+}
+
+.foodbox span.instructions{
+    color: #fe7;
+}
+
+.break span.instructions{
+    color: #D35548;
 }

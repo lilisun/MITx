@@ -3,25 +3,40 @@ var sack=(function(){
     var openImg=new Image();
     var closeImg=new Image();
     var munchImg=new Image();
+    var munch2Img=new Image();
     var items=[];
     var maxWeight;
     var dp=0;
     var money=0;
     
     function dropped(event, ui){
+        $('audio.eat')[0].play();
         $('.person').css("background-image","url("+munchImg.src+")");
+        $('.mouth').droppable("disable");
+        setTimeout(function(){
+            $('.person').css("background-image","url("+munch2Img.src+")");
+        },200);
+        setTimeout(function(){
+            $('.person').css("background-image","url("+munchImg.src+")");
+        },400);
+        setTimeout(function(){
+            $('.person').css("background-image","url("+munch2Img.src+")");
+        },600);
         setTimeout(function(){
             $('.person').css("background-image","url("+openImg.src+")");
-        },400);
+        },1000);
         var image=$(ui.draggable).find('img');
         var index=parseInt(image.attr("data-index"));
         var data=items[index];
         dp=parseInt(dp)+parseInt(data.value);
         money=parseInt(money)+parseInt(data.weight);
         updateData();
+        
         //put in next empty cell in belly
         $(ui.draggable).draggable("disable");
-        nextEmptyCell(ui.draggable,'.belly');
+        setTimeout(function(){
+            nextEmptyCell(ui.draggable,'.belly');
+        },1010);
     }
     
     function foodClicked(food){
@@ -32,6 +47,7 @@ var sack=(function(){
         money=parseInt(money)-parseInt(data.weight);
         updateData();
         
+        $('audio.out')[0].play();
         nextEmptyCell(food,'.foodbox');
         $(food).draggable("enable");
         
@@ -60,7 +76,7 @@ var sack=(function(){
     }
     
     function updateData(){
-        $('.dp').text("dp: "+dp);
+        $('.dp').text("delicious points: "+dp);
         $('.money').text("money: $"+money+"/$"+maxWeight);
     }
     
@@ -68,7 +84,8 @@ var sack=(function(){
         var image=$(ui.helper).find('img');
         var index=parseInt(image.attr("data-index"));
         var data=items[index];
-        if((parseInt(money)+parseInt(data.weight))>maxWeight){
+        if((parseInt(money)+parseInt(data.weight))>maxWeight){ //exeeds money
+            $('audio.toomuch')[0].play();
             $('.person').css("background-image","url("+closeImg.src+")");
             $('.mouth').droppable("disable");
             $(ui.helper).on("dragstop",function(event,ui){
@@ -77,6 +94,7 @@ var sack=(function(){
             });
             return; 
         }
+        $('.mouth').droppable("enable");
     }
     
     function setup(div){
@@ -91,15 +109,15 @@ var sack=(function(){
             +"      of food to eat to get the most DELICIOUS POINTS??</p>"
             +"  </div>"
             +"  <div class='data'>"
-            +"      <p class='dp'>dp: 0</p>"
+            +"      <p class='dp'>delicious points: 0</p>"
             +"      <p class='money'>money: 0</p>"
             +"  </div>"
             +"  <div class='gui'>"
-            +"      <div class='foodbox'></div>"
+            +"      <div class='foodbox'><span class='instructions'>drag food to the mouth!</span></div>"
             +"      <div class='person'></div>"
             +"      <div class='break'>"
-            +"          <span class='instructions'>drag items to the mouth"
-            +"              , click to regurgitate</span></div>"
+            +"          <span class='instructions'>click food to regurgitate and get a refund</span>"
+            +"</div>"
             +"  </div>"
             +""
             +"</div>";
@@ -123,6 +141,15 @@ var sack=(function(){
             +""
             +"</table>";
         
+        var soundTemplate=""
+            +"<audio preload='auto' class='eat'>"
+            +"  <source src='sound/eat.mp3' type='audio/mpeg'></audio>"
+            +"<audio preload='auto' class='out'>"
+            +"  <source src='sound/out.wav' type='audio/wav'></audio>"
+            +"<audio preload='auto' class='toomuch'>"
+            +"  <source src='sound/toomuch.wav' type='audio/wav'></audio>"
+            +"";
+        
         var personTemplate=""
             +"<div class='mouth'></div>"
             +"<div class='belly'></div>";
@@ -132,12 +159,14 @@ var sack=(function(){
         div.find('.person').append(personTemplate);
         div.find('.belly').append(tableTemplate);
         div.find('.belly .item').remove();
+        div.find('.break').append(soundTemplate);
         
         maxWeight=div.attr('data-max-weight');
         $('.money').text("money: $0/$"+maxWeight);
         openImg.src="img/open.png";
         closeImg.src="img/closed.png";
         munchImg.src="img/munch.png";
+        munch2Img.src="img/munch2.png";
         openImg.onload=function(){
             div.find('.person').css("background-image","url("+openImg.src+")");
             div.find('.person').css("background-size","auto 400");
