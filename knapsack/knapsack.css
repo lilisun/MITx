@@ -69,7 +69,8 @@ div.foodbox{
 }
 
 div.person{
-    width:300px;
+    border:0px solid black;
+    width:350px;
     height:400px;
     margin:0;
     float:right;
@@ -77,19 +78,19 @@ div.person{
 }
 
 div.mouth{
-    border:3px dotted #a00;
-    border-radius:50px;
-    width:100px;
-    height:75px;
-    margin-top:60px;
-    margin-left:80px;
+    border:0px dotted #a00;
+    border-radius:65px;
+    width:160px;
+    height:125px;
+    margin-top:20px;
+    margin-left:93px;
 }
 
 div.belly{
     border:0px solid #a00;
-    margin-top: 40px;
-    margin-left: 20px;
-    width:300px;
+    margin-top: 35px;
+    margin-left: 73px;
+    width:225px;
 }
 
 div.break{

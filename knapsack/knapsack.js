@@ -23,7 +23,6 @@ var sack=(function(){
         var image=$(food).find('img');
         var index=parseInt(image.attr("data-index"));
         var data=items[index];
-        console.log(data);
         dp=parseInt(dp)-parseInt(data.value);
         money=parseInt(money)-parseInt(data.weight);
         updateData();
@@ -47,7 +46,6 @@ var sack=(function(){
         if (tableClass=='.belly'){
             $(item).find('img').css("width","50px");
             $(item).on("click",function(){
-                console.log("clicked");
                 foodClicked(this)
             });
         }
@@ -58,7 +56,22 @@ var sack=(function(){
     
     function updateData(){
         $('.dp').text("dp: "+dp);
-        $('.money').text("money: "+money);
+        $('.money').text("money: $"+money+"/$"+maxWeight);
+    }
+    
+    function checkMax(event, ui){
+        var image=$(ui.helper).find('img');
+        var index=parseInt(image.attr("data-index"));
+        var data=items[index];
+        if((parseInt(money)+parseInt(data.weight))>maxWeight){
+            $('.person').css("background-image","url("+closeImg.src+")");
+            $('.mouth').droppable("disable");
+            $(ui.helper).on("dragstop",function(event,ui){
+                $('.person').css("background-image","url("+openImg.src+")");
+                $('.mouth').droppable("enable");
+            });
+            return; 
+        }
     }
     
     function setup(div){
@@ -116,6 +129,7 @@ var sack=(function(){
         div.find('.belly .item').remove();
         
         maxWeight=div.attr('data-max-weight');
+        $('.money').text("money: $0/$"+maxWeight);
         openImg.src="img/open.png";
         closeImg.src="img/closed.png";
         openImg.onload=function(){
@@ -141,7 +155,7 @@ var sack=(function(){
             $(this).find('img').attr("width","100");
             $(this).find('img').attr("data-index",i);
             $(this).append("dp: "+items[i].value+",  $"+items[i].weight);
-            $(this).draggable({containment: ".gui",revert:"invalid", revertDuration:"100",zIndex:100});
+            $(this).draggable({containment: ".gui",revert:"invalid", revertDuration:"100",zIndex:100,start:function(event,ui){checkMax(event,ui)}});
             i++;
             if (i>=items.length) return false;
         });
