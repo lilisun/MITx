@@ -104,10 +104,12 @@ div.break{
     height:110px;
     padding:10px;
     padding-bottom:10px;
+    color: #aaddff;
 }
 
 .belly td{
     font-size: 8px;
+    color: #f1f1f1;
     border:0px solid #fff;
     width:80px;
     height:70px;
@@ -118,7 +120,6 @@ div.break{
 
 div.item{
     text-align:center;
-    color: #aaddff;
 }
 
 span.instructions{
