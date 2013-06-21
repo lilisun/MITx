@@ -118,3 +118,10 @@ div.item{
     text-align:center;
     color: #aaddff;
 }
+
+span.instructions{
+    margin-left:50px;
+    font: 9px verdana;
+    color: #5f99bb;
+    text-align:center;
+}

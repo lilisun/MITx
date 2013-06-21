@@ -50,7 +50,6 @@ var sack=(function(){
                 console.log("clicked");
                 foodClicked(this)
             });
-            console.log("bound");
         }
         else{
             $(item).find('img').css("width","100px");
@@ -80,7 +79,9 @@ var sack=(function(){
             +"  <div class='gui'>"
             +"      <div class='foodbox'></div>"
             +"      <div class='person'></div>"
-            +"      <div class='break'></div>"
+            +"      <div class='break'>"
+            +"          <span class='instructions'>drag items to the mouth"
+            +"              , click to regurgitate</span></div>"
             +"  </div>"
             +""
             +"</div>";
